@@ -1,0 +1,10 @@
+version: "3.3"
+services:
+ backend:
+  container_name: pose-estimation-api
+  build: .
+  command: python3 main.py
+  ports:
+    - "5001:5001"
+  expose:
+    - "5001"
