@@ -1,3 +1,5 @@
+import requests
+
 from application.command.model.frame_pose_dto import VideoKeypointDTO, KeypointDTO, FrameKeypointDTO
 from application.command.predict_video_pose_command import PredictVideoPoseCommand
 
@@ -11,6 +13,12 @@ PART_NAMES = [
     "leftHip", "rightHip", "leftKnee", "rightKnee", "leftAnkle", "rightAnkle"
 ]
 
+def download_file(url):
+    r = requests.get(url, stream=True)
+    with open("video.mp4", 'wb') as f:
+        for chunk in r.iter_content(chunk_size=1024):
+            if chunk:
+                f.write(chunk)
 
 async def handle(command: PredictVideoPoseCommand):
     current_frame_count = 0
@@ -19,7 +27,9 @@ async def handle(command: PredictVideoPoseCommand):
         model_cfg, model_outputs = posenet.load_model(101, sess)
         output_stride = model_cfg['output_stride']
 
-        cap = cv2.VideoCapture(command.url)
+        download_file(command.url)
+
+        cap = cv2.VideoCapture("video.mp4")
 
         frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
         width = cap.get(3)
