@@ -1,14 +1,12 @@
-FROM tensorflow/tensorflow:1.12.0
-
-COPY requirements.txt /
-
-RUN python3 -m pip install -r requirements.txt
+FROM tensorflow/tensorflow:1.14.0-py3
 
 COPY . /pose-estimation-api
 
 WORKDIR /pose-estimation-api
 
 ADD . /pose-estimation-api
+
+RUN python3 -m pip install -r requirements.txt
 
 EXPOSE 5001
 
