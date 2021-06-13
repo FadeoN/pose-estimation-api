@@ -4,6 +4,7 @@ services:
   container_name: pose-estimation-api
   build: .
   command: python3 main.py
+  restart: on-failure
   ports:
     - "5001:5001"
   expose:
